@@ -1,0 +1,9 @@
+{
+  "port": 47842,
+  "largeImageDefault": "cinepulse_logo",
+  "smallImagePlay": "play",
+  "smallImagePause": "pause",
+  "smallImagePlayUrl": "",
+  "smallImagePauseUrl": "",
+  "useRemotePoster": true
+}

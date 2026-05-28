@@ -1,0 +1,8 @@
+{
+  "name": "presence-discord",
+  "private": true,
+  "scripts": {
+    "dev":   "cd companion && node dev-start.js",
+    "build": "cd companion && npm run build"
+  }
+}
