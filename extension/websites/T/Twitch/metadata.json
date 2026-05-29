@@ -1,8 +1,0 @@
-{
-  "id": "twitch",
-  "name": "Twitch",
-  "type": "twitch_presence",
-  "matches": ["*://*.twitch.tv/*"],
-  "presenceScript": "websites/T/Twitch/presence.js",
-  "enabledByDefault": true
-}

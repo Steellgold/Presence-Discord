@@ -1,9 +1,28 @@
-# ─── Outils de build (binaires auto-téléchargés) ──────────────────────────────
-companion/build/rcedit.exe
+# Dependencies
+node_modules/
+.pnpm-store/
 
-# ─── Claude Code ──────────────────────────────────────────────────────────────
-.claude/
-
+# Build outputs
 dist/
-*.env
-**/node_modules/
+build/
+coverage/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
