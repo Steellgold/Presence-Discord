@@ -13,7 +13,7 @@
     "clean": "pnpm -r --if-present run clean",
     "dev": "pnpm -r --parallel --if-present run dev",
     "lint": "eslint .",
-    "typecheck": "tsc -b --pretty false"
+    "typecheck": "pnpm --filter @dp/websites generate && tsc -b --pretty false"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

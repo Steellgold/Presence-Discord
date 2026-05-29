@@ -8,7 +8,14 @@ const tsconfigRootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(
   {
-    ignores: ["**/dist/**", "**/out/**", "**/release/**", "**/node_modules/**", "**/coverage/**"],
+    ignores: [
+      "**/dist/**",
+      "**/out/**",
+      "**/release/**",
+      "**/node_modules/**",
+      "**/coverage/**",
+      "**/scripts/**/*.mjs",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,

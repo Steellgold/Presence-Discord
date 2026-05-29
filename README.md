@@ -9,6 +9,7 @@ Monorepo PNPM pour les applications et packages du projet Discord Presence.
 - `apps/extension` : extension navigateur React + TypeScript + Tailwind CSS.
 - `packages/websites` : catalogue et logique des sites supportes.
 - `packages/utils` : utilitaires partages.
+- `packages/tailwind-config` : theme Tailwind partage entre web, extension et compagnon.
 
 Les packages workspace utilisent le scope `@dp/*`.
 
@@ -35,6 +36,8 @@ pnpm --filter @dp/extension build
 ```
 
 Le build de l'extension produit `apps/extension/dist` avec le manifest, la popup HTML, le JS, le CSS et les locales Chrome.
+
+Le package `@dp/websites` charge les presences automatiquement depuis `packages/websites/src/[#A-Z]/[PresenceName]`. Pour ajouter un site, il suffit de creer son dossier avec `metadata.json` et `presence.ts`.
 
 Pour compiler l'application web :
 
