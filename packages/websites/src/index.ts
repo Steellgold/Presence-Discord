@@ -1,26 +1,29 @@
-export type WebsiteDefinition = {
-  readonly id: string;
-  readonly displayName: string;
-  readonly matchers: readonly string[];
-};
+import { presenceRegistry } from "./.generated/presences.js";
+import type { PresenceDefinition, WebsiteMetadata } from "./types.js";
 
-export const websites = [
-  {
-    id: "youtube",
-    displayName: "YouTube",
-    matchers: ["youtube.com", "youtu.be"],
-  },
-  {
-    id: "twitch",
-    displayName: "Twitch",
-    matchers: ["twitch.tv"],
-  },
-] as const satisfies readonly WebsiteDefinition[];
+export type {
+  PresenceActivity,
+  PresenceContext,
+  PresenceDefinition,
+  WebsiteMetadata,
+} from "./types.js";
 
-export const listSupportedWebsites = (): readonly WebsiteDefinition[] => websites;
+export const websites: readonly WebsiteMetadata[] = presenceRegistry.map(
+  (presence) => presence.metadata,
+);
 
-export const findWebsiteByHost = (host: string): WebsiteDefinition | undefined =>
+export const listSupportedWebsites = (): readonly WebsiteMetadata[] => websites;
+
+export const listPresences = (): readonly PresenceDefinition[] => presenceRegistry;
+
+export const findWebsiteByHost = (host: string): WebsiteMetadata | undefined =>
   websites.find((website) =>
     website.matchers.some((matcher) => host === matcher || host.endsWith(`.${matcher}`)),
   );
 
+export const findPresenceByHost = (host: string): PresenceDefinition | undefined =>
+  presenceRegistry.find((presence) =>
+    presence.metadata.matchers.some(
+      (matcher) => host === matcher || host.endsWith(`.${matcher}`),
+    ),
+  );

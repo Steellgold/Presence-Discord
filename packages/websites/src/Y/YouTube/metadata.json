@@ -1,0 +1,6 @@
+{
+  "id": "youtube",
+  "displayName": "YouTube",
+  "matchers": ["youtube.com", "youtu.be"]
+}
+

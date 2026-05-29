@@ -1,0 +1,6 @@
+{
+  "id": "twitch",
+  "displayName": "Twitch",
+  "matchers": ["twitch.tv"]
+}
+

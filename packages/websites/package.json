@@ -10,8 +10,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "pnpm generate && tsc -b",
     "clean": "rimraf dist",
-    "typecheck": "tsc -b --pretty false"
+    "generate": "node scripts/generate-presence-registry.mjs",
+    "typecheck": "pnpm generate && tsc -b --pretty false"
   }
 }
