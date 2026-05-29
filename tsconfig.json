@@ -1,0 +1,21 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/utils"
+    },
+    {
+      "path": "./packages/websites"
+    },
+    {
+      "path": "./apps/web"
+    },
+    {
+      "path": "./apps/companion"
+    },
+    {
+      "path": "./apps/extension"
+    }
+  ]
+}
+

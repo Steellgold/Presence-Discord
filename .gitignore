@@ -5,6 +5,8 @@ node_modules/
 # Build outputs
 dist/
 build/
+out/
+release/
 coverage/
 *.tsbuildinfo
 
@@ -25,4 +27,3 @@ yarn-error.log*
 Thumbs.db
 .idea/
 .vscode/
-
