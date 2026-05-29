@@ -1,0 +1,48 @@
+{
+  "name": "@dp/companion",
+  "version": "0.0.0",
+  "description": "Desktop companion app for Discord Presence.",
+  "author": "Discord Presence",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "dependencies": {
+    "@dp/utils": "workspace:*",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "scripts": {
+    "build": "tsc -b && electron-vite build",
+    "clean": "rimraf dist out release",
+    "dev": "electron-vite dev",
+    "package": "pnpm build && electron-builder --dir",
+    "package:mac": "pnpm build && electron-builder --mac",
+    "package:win": "pnpm build && electron-builder --win",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "build": {
+    "appId": "dev.dp.companion",
+    "productName": "Discord Presence Companion",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^42.3.0"
+  }
+}
