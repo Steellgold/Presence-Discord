@@ -1,0 +1,31 @@
+{
+  "extensionName": {
+    "message": "Discord Presence",
+    "description": "Nom de l'extension affiche dans l'interface Chrome."
+  },
+  "extensionDescription": {
+    "message": "Partage une presence enrichie depuis les sites compatibles vers Discord.",
+    "description": "Description de l'extension affichee dans l'interface Chrome."
+  },
+  "popupTitle": {
+    "message": "Discord Presence",
+    "description": "Titre de la popup."
+  },
+  "popupStatusLabel": {
+    "message": "Statut",
+    "description": "Libelle du statut de connexion de l'extension."
+  },
+  "popupStatusReady": {
+    "message": "Pret",
+    "description": "Statut affiche quand la popup de l'extension est prete."
+  },
+  "popupSupportedSites": {
+    "message": "Sites compatibles",
+    "description": "Libelle du nombre de sites compatibles."
+  },
+  "popupLocaleLabel": {
+    "message": "Langue",
+    "description": "Libelle de la langue actuelle de l'interface Chrome."
+  }
+}
+

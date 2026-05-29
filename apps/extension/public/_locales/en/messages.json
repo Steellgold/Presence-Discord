@@ -1,0 +1,31 @@
+{
+  "extensionName": {
+    "message": "Discord Presence",
+    "description": "Extension name shown in Chrome UI."
+  },
+  "extensionDescription": {
+    "message": "Share rich presence from supported websites to Discord.",
+    "description": "Extension description shown in Chrome UI."
+  },
+  "popupTitle": {
+    "message": "Discord Presence",
+    "description": "Popup title."
+  },
+  "popupStatusLabel": {
+    "message": "Status",
+    "description": "Label for the extension connection status."
+  },
+  "popupStatusReady": {
+    "message": "Ready",
+    "description": "Status shown when the extension popup is ready."
+  },
+  "popupSupportedSites": {
+    "message": "Supported sites",
+    "description": "Label for the supported websites count."
+  },
+  "popupLocaleLabel": {
+    "message": "Locale",
+    "description": "Label for the current Chrome UI locale."
+  }
+}
+
