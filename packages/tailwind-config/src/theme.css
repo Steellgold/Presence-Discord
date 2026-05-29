@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0a11;
+  --color-foreground: #edf2ff;
+  --color-card: #11131a;
+  --color-card-foreground: #edf2ff;
+  --color-popover: #181b25;
+  --color-popover-foreground: #edf2ff;
+  --color-primary: #7567f5;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #272542;
+  --color-secondary-foreground: #edf2ff;
+  --color-muted: #1b1e29;
+  --color-muted-foreground: #aab3c8;
+  --color-accent: #2d2a50;
+  --color-accent-foreground: #edf2ff;
+  --color-destructive: #ff3434;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #2a2e3d;
+  --color-input: #2a2e3d;
+  --color-ring: #7567f5;
+  --color-success: #23a55a;
+  --color-page: #f6f8fb;
+  --color-page-foreground: #172033;
+  --color-page-muted-foreground: #536079;
+  --color-page-border: #d9e0eb;
+  --radius-lg: 8px;
+  --shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.42);
+  --shadow-glow: 0 0 0 4px rgba(117, 103, 245, 0.18);
+}
+
+@utility extension-bg {
+  background:
+    linear-gradient(135deg, rgba(117, 103, 245, 0.22), transparent 48%),
+    var(--color-card);
+}
+
+@utility web-hero-bg {
+  background:
+    linear-gradient(135deg, rgba(117, 103, 245, 0.16), transparent 42%),
+    var(--color-page);
+}
+
+@utility desktop-bg {
+  background:
+    linear-gradient(135deg, rgba(117, 103, 245, 0.16), transparent 44%),
+    var(--color-background);
+}
+
+@layer base {
+  :root {
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+  }
+}
