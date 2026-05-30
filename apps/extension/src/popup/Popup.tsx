@@ -1,44 +1,54 @@
 import { listSupportedWebsites } from "@dp/websites";
 import type { JSX } from "react";
-import { getCurrentLocale, getMessage } from "../lib/i18n";
+import { createTranslator } from "../lib/i18n";
+import { DefaultView, Header, SettingsView, Tabs } from "./components/PopupSections";
+import { usePopupState } from "./hooks/usePopupState";
 
-const supportedWebsites = listSupportedWebsites();
+const websites = listSupportedWebsites();
 
-export const Popup = (): JSX.Element => (
-  <main className="extension-bg grid w-80 gap-4 p-[18px] text-foreground">
-    <header className="flex items-center gap-2.5">
-      <span
-        className="size-2.5 rounded-full bg-success shadow-[0_0_0_4px_rgba(35,165,90,0.16)]"
-        aria-hidden="true"
+export const Popup = (): JSX.Element => {
+  const state = usePopupState();
+  const { t } = createTranslator(state.locale);
+
+  return (
+    <div className="popup">
+      <Header
+        companionError={state.companionError}
+        companionStatus={state.companionStatus}
+        discordAvatarUrl={state.discordAccount.avatarUrl}
+        discordStatus={state.discordAccount.status}
+        t={t}
       />
-      <h1 className="m-0 text-lg font-bold tracking-normal">{getMessage("popupTitle")}</h1>
-    </header>
-
-    <dl className="m-0 grid gap-2.5">
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupStatusLabel")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {getMessage("popupStatusReady")}
-        </dd>
-      </div>
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupSupportedSites")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {supportedWebsites.length}
-        </dd>
-      </div>
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupLocaleLabel")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {getCurrentLocale()}
-        </dd>
-      </div>
-    </dl>
-  </main>
-);
+      <Tabs activeTab={state.tab} onChange={state.setTab} t={t} />
+      <DefaultView
+        blur={state.blur}
+        duration={state.duration}
+        isActive={state.tab === "default"}
+        isHiddenOpen={state.isHiddenOpen}
+        isPlaying={state.isPlaying}
+        onBlurChange={state.setBlur}
+        onHiddenToggle={() => { state.setIsHiddenOpen(!state.isHiddenOpen); }}
+        onProgressChange={state.setProgress}
+        onQueryChange={state.setQuery}
+        onTogglePlay={() => { state.setIsPlaying(!state.isPlaying); }}
+        progress={state.progress}
+        query={state.query}
+        t={t}
+      />
+      <SettingsView
+        activeCount={websites.length}
+        blur={state.blur}
+        companionStatus={state.companionStatus}
+        discordAccount={state.discordAccount}
+        isActive={state.tab === "settings"}
+        locale={state.locale}
+        onBlurChange={state.setBlur}
+        onLocaleChange={state.setLocale}
+        onThemeChange={state.setTheme}
+        t={t}
+        theme={state.theme}
+        totalCount={websites.length}
+      />
+    </div>
+  );
+};

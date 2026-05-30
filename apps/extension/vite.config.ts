@@ -1,14 +1,14 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const appRoot = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
+  root: appRoot,
   base: "./",
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   publicDir: "public",
   build: {
     emptyOutDir: true,
