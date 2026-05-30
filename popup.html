@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Présences</title>
+<style>
+/* ═══════════════════════════════════════
+   THEME TOKENS
+═══════════════════════════════════════ */
+:root {
+  --bg-base:        #0e0e12;
+  --bg-popup:       #111116;
+  --bg-surface:     rgba(255,255,255,0.04);
+  --bg-surface2:    rgba(255,255,255,0.07);
+  --bg-hover:       rgba(255,255,255,0.055);
+  --border:         rgba(255,255,255,0.08);
+  --text-primary:   #f0f0f8;
+  --text-secondary: rgba(255,255,255,0.45);
+  --text-muted:     rgba(255,255,255,0.25);
+  --text-label:     rgba(255,255,255,0.3);
+  --scrollbar:      rgba(255,255,255,0.13);
+  --toggle-off:     rgba(255,255,255,0.12);
+  --tab-active-bg:  rgba(255,255,255,0.1);
+  --input-bg:       rgba(255,255,255,0.05);
+  --input-border:   rgba(255,255,255,0.09);
+  --input-focus:    rgba(255,255,255,0.2);
+  --shadow-popup:   0 8px 32px rgba(0,0,0,0.5);
+  --accent:         #7c6ef7;
+  --accent-glow:    rgba(124,110,247,0.3);
+  --danger:         #ed4245;
+  --success:        #3ba55c;
+  --warn:           #faa61a;
+}
+
+[data-theme="light"] {
+  --bg-base:        #e8e8f0;
+  --bg-popup:       #f5f5fa;
+  --bg-surface:     rgba(0,0,0,0.04);
+  --bg-surface2:    rgba(0,0,0,0.065);
+  --bg-hover:       rgba(0,0,0,0.04);
+  --border:         rgba(0,0,0,0.09);
+  --text-primary:   #1a1a2e;
+  --text-secondary: rgba(0,0,0,0.5);
+  --text-muted:     rgba(0,0,0,0.3);
+  --text-label:     rgba(0,0,0,0.35);
+  --scrollbar:      rgba(0,0,0,0.14);
+  --toggle-off:     rgba(0,0,0,0.12);
+  --tab-active-bg:  rgba(0,0,0,0.08);
+  --input-bg:       rgba(0,0,0,0.05);
+  --input-border:   rgba(0,0,0,0.1);
+  --input-focus:    rgba(0,0,0,0.18);
+  --shadow-popup:   0 8px 32px rgba(0,0,0,0.12);
+  --accent:         #5b4de0;
+  --accent-glow:    rgba(91,77,224,0.2);
+}
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 380px;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  transition: background .2s, color .2s;
+}
+
+.popup {
+  background: var(--bg-popup);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-popup);
+  display: flex;
+  flex-direction: column;
+  transition: background .2s, border-color .2s;
+}
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header-left { display:flex; align-items:center; gap:9px; }
+
+.discord-avatar-wrap { position:relative; flex-shrink:0; }
+
+.discord-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--bg-surface2);
+  border: 1.5px solid var(--border);
+  display: flex; align-items:center; justify-content:center;
+  overflow: hidden;
+}
+
+.discord-avatar svg { width:16px; height:16px; color:var(--text-muted); }
+.discord-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+.discord-status-dot {
+  position: absolute; bottom:-1px; right:-1px;
+  width:9px; height:9px; border-radius:50%;
+  border: 2px solid var(--bg-popup);
+  background: #747f8d;
+  transition: background .2s;
+}
+.discord-status-dot.online  { background: var(--success); }
+.discord-status-dot.idle    { background: var(--warn); }
+.discord-status-dot.dnd     { background: var(--danger); }
+.discord-status-dot.offline { background: #747f8d; }
+
+.header-title { font-size:14px; font-weight:700; color:var(--text-primary); letter-spacing:.01em; }
+
+.header-right { display:flex; align-items:center; gap:8px; }
+
+.version-badge { font-size:10px; color:var(--text-muted); letter-spacing:.05em; font-weight:500; }
+
+.tooltip-wrap { position:relative; display:flex; align-items:center; }
+
+.tooltip-wrap .tooltip {
+  position: absolute; right:0; top:calc(100% + 6px);
+  background: #1e1e26; color:#e8e8f0;
+  font-size:11px; padding:5px 9px; border-radius:7px;
+  white-space:nowrap; pointer-events:none;
+  opacity:0; transform:translateY(-4px);
+  transition: opacity .15s, transform .15s;
+  z-index:200; border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+}
+[data-theme="light"] .tooltip-wrap .tooltip { background:#2a2a3a; }
+.tooltip-wrap:hover .tooltip { opacity:1; transform:translateY(0); }
+
+.companion-indicator {
+  width:8px; height:8px; border-radius:50%; cursor:default; flex-shrink:0;
+}
+.companion-indicator.ok      { background:var(--success); box-shadow:0 0 5px rgba(59,165,92,.5); }
+.companion-indicator.offline { background:#747f8d; }
+.companion-indicator.error   { background:var(--danger); box-shadow:0 0 5px rgba(237,66,69,.4); }
+
+/* ═══════════════════════════════════════
+   TABS
+═══════════════════════════════════════ */
+.tabs {
+  display:flex; margin:10px 12px 10px;
+  background:var(--bg-surface); border-radius:10px; padding:3px; gap:2px;
+  flex-shrink:0;
+}
+
+.tab {
+  flex:1; padding:6px 10px; border-radius:8px; border:none;
+  cursor:pointer; font-size:12px; font-weight:500; transition:all .15s;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  background:transparent; color:var(--text-secondary);
+}
+.tab.active { background:var(--tab-active-bg); color:var(--text-primary); box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+.tab svg { width:13px; height:13px; }
+
+/* ═══════════════════════════════════════
+   VIEWS
+═══════════════════════════════════════ */
+.view { display:none; flex-direction:column; }
+.view.active { display:flex; }
+
+/* ═══════════════════════════════════════
+   CINEMA PLAYER
+═══════════════════════════════════════ */
+.cinema-player {
+  margin:0 12px 10px; border-radius:14px;
+  overflow:hidden; position:relative; min-height:110px; flex-shrink:0;
+}
+
+.cinema-bg {
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  filter:blur(22px) brightness(.35) saturate(1.6);
+  transform:scale(1.15); z-index:0;
+  transition:filter .3s;
+}
+[data-theme="light"] .cinema-bg { filter:blur(22px) brightness(.55) saturate(1.4); }
+
+.cinema-overlay { position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:1; }
+
+.cinema-content {
+  position:relative; z-index:2;
+  display:flex; align-items:center; gap:12px; padding:12px;
+}
+
+.cinema-thumb {
+  width:72px; height:72px; border-radius:10px; flex-shrink:0;
+  background-size:cover; background-position:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+}
+
+.cinema-info { flex:1; min-width:0; }
+
+.cinema-source { display:flex; align-items:center; gap:5px; margin-bottom:4px; }
+.cinema-source-badge { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); }
+
+.cinema-title {
+  font-size:13px; font-weight:700; color:#fff;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  margin-bottom:2px; text-shadow:0 1px 4px rgba(0,0,0,.6);
+}
+
+.cinema-author {
+  font-size:11px; color:rgba(255,255,255,.55);
+  display:flex; align-items:center; gap:4px; margin-bottom:8px;
+}
+.cinema-author svg { width:11px; height:11px; color:#a78bfa; flex-shrink:0; }
+
+.cinema-progress-wrap {
+  margin-bottom:5px; position:relative; height:3px;
+  border-radius:2px; background:rgba(255,255,255,.15); cursor:pointer;
+}
+.cinema-progress-fill {
+  height:100%; border-radius:2px; background:#fff; position:relative; transition:width .1s;
+}
+.cinema-progress-fill::after {
+  content:''; position:absolute; right:-4px; top:50%; transform:translateY(-50%);
+  width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 0 4px rgba(0,0,0,.4);
+}
+.cinema-times { display:flex; justify-content:space-between; font-size:10px; color:rgba(255,255,255,.4); }
+
+.cinema-controls {
+  position:relative; z-index:2;
+  display:flex; align-items:center; justify-content:center; gap:20px; padding:0 12px 12px;
+}
+
+.ctrl-btn {
+  background:transparent; border:none; cursor:pointer; color:rgba(255,255,255,.6);
+  display:flex; align-items:center; justify-content:center;
+  padding:4px; border-radius:50%; transition:color .15s, background .15s;
+}
+.ctrl-btn:hover { color:#fff; background:rgba(255,255,255,.12); }
+.ctrl-btn svg { width:18px; height:18px; }
+
+.ctrl-btn.play-btn {
+  width:38px; height:38px; background:#fff; color:#111; border-radius:50%;
+  box-shadow:0 2px 12px rgba(0,0,0,.4); transition:transform .1s;
+}
+.ctrl-btn.play-btn:hover { transform:scale(1.06); background:#fff; color:#111; }
+.ctrl-btn.play-btn svg { width:16px; height:16px; }
+
+/* ═══════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════ */
+.search-wrap { margin:0 12px 8px; position:relative; flex-shrink:0; }
+.search-wrap svg {
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  width:14px; height:14px; color:var(--text-muted); pointer-events:none;
+}
+.search-input {
+  width:100%; background:var(--input-bg); border:1px solid var(--input-border);
+  border-radius:10px; padding:8px 12px 8px 32px; font-size:12px;
+  color:var(--text-primary); outline:none; transition:border-color .15s, background .2s;
+}
+.search-input::placeholder { color:var(--text-muted); }
+.search-input:focus { border-color:var(--input-focus); }
+
+/* ═══════════════════════════════════════
+   SECTION LABEL
+═══════════════════════════════════════ */
+.section-label {
+  font-size:10px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--text-label); padding:0 16px; margin-bottom:2px;
+  flex-shrink:0;
+}
+
+/* ═══════════════════════════════════════
+   SERVICE LIST
+═══════════════════════════════════════ */
+.list-wrap { max-height:200px; overflow-y:auto; }
+.list-wrap::-webkit-scrollbar { width:4px; }
+.list-wrap::-webkit-scrollbar-track { background:transparent; }
+.list-wrap::-webkit-scrollbar-thumb { background:var(--scrollbar); border-radius:4px; }
+
+.service-row {
+  display:flex; align-items:center; gap:10px; padding:8px 14px;
+  transition:background .1s; cursor:pointer;
+}
+.service-row:hover { background:var(--bg-hover); }
+
+.service-icon {
+  width:32px; height:32px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.service-info { flex:1; min-width:0; }
+.service-name { font-size:13px; font-weight:500; color:var(--text-primary); display:flex; align-items:center; gap:5px; }
+.dot-status { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dot-status.active   { background:#4ade80; box-shadow:0 0 4px rgba(74,222,128,.5); }
+.dot-status.inactive { background:var(--text-muted); }
+.service-sub { font-size:11px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+
+/* Toggle */
+.toggle { position:relative; width:36px; height:20px; flex-shrink:0; }
+.toggle input { opacity:0; width:0; height:0; position:absolute; }
+.toggle-track { position:absolute; inset:0; border-radius:10px; background:var(--toggle-off); cursor:pointer; transition:background .2s; }
+.toggle input:checked + .toggle-track { background:var(--accent); }
+.toggle-thumb { position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:rgba(255,255,255,.5); pointer-events:none; transition:transform .2s, background .2s; }
+[data-theme="light"] .toggle-thumb { background:rgba(0,0,0,.3); }
+.toggle input:checked ~ .toggle-thumb { transform:translateX(16px); background:#fff; }
+
+/* Icon button */
+.icon-btn {
+  width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+  border-radius:6px; color:var(--text-secondary); cursor:pointer;
+  transition:color .15s, background .15s; background:transparent; border:none; flex-shrink:0;
+}
+.icon-btn:hover { background:var(--bg-hover); color:var(--text-primary); }
+.icon-btn svg { width:14px; height:14px; }
+
+/* Divider */
+.divider { height:1px; background:var(--border); margin:2px 0; flex-shrink:0; }
+
+/* Collapse */
+.collapse-toggle {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:7px 16px; cursor:pointer; color:var(--text-secondary);
+  font-size:11px; font-weight:500; user-select:none; transition:color .15s; flex-shrink:0;
+}
+.collapse-toggle:hover { color:var(--text-primary); }
+.collapse-toggle svg { width:14px; height:14px; transition:transform .2s; }
+.collapse-toggle.open svg { transform:rotate(180deg); }
+.hidden-list { overflow:hidden; max-height:0; transition:max-height .25s ease; }
+.hidden-list.open { max-height:200px; }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.footer {
+  border-top:1px solid var(--border); background:var(--bg-surface);
+  padding:8px 14px; display:flex; align-items:center; justify-content:flex-end;
+  gap:6px; transition:background .2s; flex-shrink:0;
+}
+
+.footer-link {
+  display:flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border-radius:8px; border:1px solid var(--border);
+  background:var(--bg-surface); color:var(--text-secondary);
+  text-decoration:none; cursor:pointer; transition:color .15s, background .15s;
+  flex-shrink:0;
+}
+.footer-link:hover { background:var(--bg-hover); color:var(--text-primary); }
+.footer-link svg { width:14px; height:14px; }
+
+/* ═══════════════════════════════════════
+   SETTINGS PAGE
+═══════════════════════════════════════ */
+.settings-scroll {
+  overflow-y:auto; max-height:490px;
+  display:flex; flex-direction:column; gap:0;
+}
+.settings-scroll::-webkit-scrollbar { width:4px; }
+.settings-scroll::-webkit-scrollbar-track { background:transparent; }
+.settings-scroll::-webkit-scrollbar-thumb { background:var(--scrollbar); border-radius:4px; }
+
+/* Settings section group */
+.settings-group {
+  padding:10px 14px 4px;
+}
+.settings-group-label {
+  font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--text-label); margin-bottom:8px; padding-left:2px;
+}
+
+/* Card row */
+.settings-card {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden; margin-bottom:6px;
+}
+
+.settings-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 13px; transition:background .1s;
+}
+.settings-row + .settings-row { border-top:1px solid var(--border); }
+.settings-row.clickable { cursor:pointer; }
+.settings-row.clickable:hover { background:var(--bg-hover); }
+
+.settings-row-icon {
+  width:32px; height:32px; border-radius:9px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg-surface2);
+}
+.settings-row-icon svg { width:16px; height:16px; color:var(--text-secondary); }
+
+.settings-row-info { flex:1; min-width:0; }
+.settings-row-label { font-size:13px; font-weight:500; color:var(--text-primary); }
+.settings-row-sub { font-size:11px; color:var(--text-secondary); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.settings-row-action { flex-shrink:0; display:flex; align-items:center; gap:6px; }
+.settings-row-action svg { width:14px; height:14px; color:var(--text-muted); }
+
+/* Discord account card */
+.discord-account-card {
+  display:flex; align-items:center; gap:11px; padding:12px 13px;
+}
+
+.discord-big-avatar {
+  width:42px; height:42px; border-radius:50%; flex-shrink:0;
+  background:var(--bg-surface2); border:2px solid var(--border);
+  display:flex; align-items:center; justify-content:center; position:relative; overflow:visible;
+}
+.discord-big-avatar-inner {
+  width:100%; height:100%; border-radius:50%; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.discord-big-avatar-inner svg { width:22px; height:22px; color:var(--text-muted); }
+.discord-big-avatar-inner img { width:100%; height:100%; object-fit:cover; }
+
+.discord-big-status {
+  position:absolute; bottom:-1px; right:-1px;
+  width:13px; height:13px; border-radius:50%;
+  border:2.5px solid var(--bg-popup); background:#747f8d;
+}
+.discord-big-status.online  { background:var(--success); }
+.discord-big-status.idle    { background:var(--warn); }
+.discord-big-status.dnd     { background:var(--danger); }
+
+.discord-account-info { flex:1; min-width:0; }
+.discord-account-name { font-size:14px; font-weight:600; color:var(--text-primary); }
+.discord-account-tag  { font-size:11px; color:var(--text-secondary); margin-top:1px; }
+
+.btn-sm {
+  padding:5px 11px; border-radius:8px; border:1px solid var(--border);
+  background:var(--bg-surface2); color:var(--text-secondary);
+  font-size:11px; font-weight:500; cursor:pointer; white-space:nowrap;
+  transition:background .15s, color .15s; flex-shrink:0;
+}
+.btn-sm:hover { background:var(--bg-hover); color:var(--text-primary); }
+.btn-sm.danger { border-color:rgba(237,66,69,.3); color:var(--danger); }
+.btn-sm.danger:hover { background:rgba(237,66,69,.1); }
+.btn-sm.accent { border-color:var(--accent); color:var(--accent); background:var(--accent-glow); }
+.btn-sm.accent:hover { background:rgba(124,110,247,.25); }
+
+/* Slider row */
+.slider-row { padding:10px 13px 12px; }
+.slider-row-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.slider-label { font-size:12px; font-weight:500; color:var(--text-primary); display:flex; align-items:center; gap:7px; }
+.slider-label svg { width:14px; height:14px; color:var(--text-secondary); }
+.slider-value { font-size:11px; color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }
+
+input[type="range"] {
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:4px; border-radius:2px;
+  background:var(--bg-surface2); outline:none; cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none;
+  width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--bg-popup);
+  box-shadow:0 0 0 2px var(--accent-glow); cursor:pointer;
+  transition:box-shadow .15s;
+}
+input[type="range"]:hover::-webkit-slider-thumb { box-shadow:0 0 0 4px var(--accent-glow); }
+
+/* Theme selector inline */
+.theme-inline-options {
+  display:flex; gap:6px; padding:10px 13px;
+}
+
+.theme-chip {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:8px 6px; border-radius:10px; cursor:pointer;
+  border:1.5px solid var(--border); background:var(--bg-surface);
+  color:var(--text-secondary); font-size:11px; font-weight:500;
+  transition:all .15s; user-select:none;
+}
+.theme-chip svg { width:16px; height:16px; }
+.theme-chip:hover { background:var(--bg-hover); color:var(--text-primary); border-color:var(--input-focus); }
+.theme-chip.selected { border-color:var(--accent); color:var(--accent); background:var(--accent-glow); }
+
+/* Lang toggle */
+.lang-options { display:flex; gap:6px; padding:10px 13px; }
+
+.lang-chip {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:7px 10px; border-radius:10px; cursor:pointer;
+  border:1.5px solid var(--border); background:var(--bg-surface);
+  color:var(--text-secondary); font-size:12px; font-weight:500;
+  transition:all .15s; user-select:none;
+}
+.lang-chip:hover { background:var(--bg-hover); color:var(--text-primary); }
+.lang-chip.selected { border-color:var(--accent); color:var(--accent); background:var(--accent-glow); }
+
+/* Update status */
+.update-status {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:11px; font-weight:500; padding:2px 7px; border-radius:5px;
+}
+.update-status.checking { color:var(--text-muted); background:var(--bg-surface2); }
+.update-status.up-to-date { color:var(--success); background:rgba(59,165,92,.12); }
+.update-status.update-available { color:var(--warn); background:rgba(250,166,26,.12); }
+.update-status.error { color:var(--danger); background:rgba(237,66,69,.1); }
+.update-status-dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
+
+/* Debug grid */
+.debug-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:10px 13px;
+}
+.debug-item {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:9px; padding:8px 10px;
+}
+.debug-key { font-size:9.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:2px; }
+.debug-val { font-size:12px; font-weight:600; color:var(--text-primary); font-family:monospace; }
+.debug-val.ok     { color:var(--success); }
+.debug-val.warn   { color:var(--warn); }
+.debug-val.err    { color:var(--danger); }
+
+/* External links row */
+.ext-links { display:flex; gap:6px; padding:10px 13px 12px; }
+.ext-link-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:8px 10px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--border); background:var(--bg-surface);
+  color:var(--text-secondary); font-size:11px; font-weight:500;
+  text-decoration:none; transition:background .15s, color .15s;
+}
+.ext-link-btn:hover { background:var(--bg-hover); color:var(--text-primary); }
+.ext-link-btn svg { width:14px; height:14px; flex-shrink:0; }
+
+/* Spinner */
+@keyframes spin { to { transform:rotate(360deg); } }
+.spin { animation:spin .8s linear infinite; }
+
+@keyframes equalize { from { height:4px; } to { height:18px; } }
+</style>
+</head>
+<body>
+<div class="popup">
+
+  <!-- ══════════════ HEADER ══════════════ -->
+  <div class="header">
+    <div class="header-left">
+      <div class="discord-avatar-wrap">
+        <div class="discord-avatar" id="discordAvatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+        <span class="discord-status-dot offline" id="discordStatusDot"></span>
+      </div>
+      <span class="header-title">Présences</span>
+    </div>
+
+    <div class="header-right">
+      <span class="version-badge">v1.0.0</span>
+      <div class="tooltip-wrap">
+        <div class="companion-indicator offline" id="companionIndicator"></div>
+        <div class="tooltip" id="companionTooltip">Compagnon non connecté</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ TABS ══════════════ -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('default', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Par défaut
+    </button>
+    <button class="tab" onclick="switchTab('settings', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Réglages
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       VIEW: DEFAULT
+  ══════════════════════════════════════ -->
+  <div class="view active" id="view-default">
+
+    <!-- Cinema Player -->
+    <div class="cinema-player">
+      <div class="cinema-bg" id="cinemaBg" style="background-image:url('https://i.ytimg.com/vi/HeQX2HjkcNo/hqdefault.jpg');"></div>
+      <div class="cinema-overlay"></div>
+      <div class="cinema-content">
+        <div class="cinema-thumb" id="cinemaThumb" style="background-image:url('https://i.ytimg.com/vi/HeQX2HjkcNo/hqdefault.jpg');"></div>
+        <div class="cinema-info">
+          <div class="cinema-source">
+            <svg viewBox="0 0 24 24" fill="#FF0000" width="12" height="12">
+              <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/>
+              <polygon fill="white" points="9.7,15.5 15.8,12 9.7,8.5"/>
+            </svg>
+            <span class="cinema-source-badge">YouTube</span>
+          </div>
+          <div class="cinema-title">Veritasium — Something weird satisfies...</div>
+          <div class="cinema-author">
+            Veritasium
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </div>
+          <div class="cinema-progress-wrap" id="progressWrap" onclick="seekProgress(event)">
+            <div class="cinema-progress-fill" id="progressFill"></div>
+          </div>
+          <div class="cinema-times">
+            <span id="timeElapsed">0:08</span>
+            <span>2:46</span>
+          </div>
+        </div>
+      </div>
+      <div class="cinema-controls">
+        <button class="ctrl-btn" onclick="skipPrev()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ctrl-btn" onclick="skipNext()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="Rechercher..." id="searchInput" oninput="filterServices()">
+    </div>
+
+    <!-- Library -->
+    <div class="section-label">Bibliothèque</div>
+
+    <div class="list-wrap" id="serviceList">
+      <div class="service-row" data-name="youtube">
+        <div class="service-icon" style="background:#1a0a0a;">
+          <svg viewBox="0 0 24 24" fill="#FF0000" width="22" height="22">
+            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/>
+            <polygon fill="white" points="9.7,15.5 15.8,12 9.7,8.5"/>
+          </svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">YouTube <span class="dot-status active"></span></div>
+          <div class="service-sub">Veritasium — Something weird sati...</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="toggleService(this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+
+      <div class="service-row" data-name="spotify">
+        <div class="service-icon" style="background:#0a1a0a;">
+          <svg viewBox="0 0 24 24" fill="#1DB954" width="22" height="22">
+            <circle cx="12" cy="12" r="12"/>
+            <path fill="white" d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75a1.2 1.2 0 1 1-.7-2.3C8.8 6.4 14.8 6.6 18.6 8.8a1.2 1.2 0 0 1-1 2.1zm-.1 3.2a1 1 0 0 1-1.4.3c-2.7-1.7-6.8-2.2-9.9-1.2a1 1 0 0 1-.6-1.9c3.6-1.1 8.1-.6 11.2 1.4a1 1 0 0 1 .3 1.4zm-1.2 3.1a.8.8 0 0 1-1.1.2c-2.4-1.4-5.3-1.7-8.8-.9a.8.8 0 0 1-.4-1.6c3.8-.9 7.1-.5 9.8 1.1a.8.8 0 0 1 .3 1.1z"/>
+          </svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">Spotify <span class="dot-status active"></span></div>
+          <div class="service-sub">Daft Punk — Around the World</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked onchange="toggleService(this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+
+      <div class="service-row" data-name="netflix">
+        <div class="service-icon" style="background:#1a0a0a;">
+          <svg viewBox="0 0 24 24" width="22" height="22"><rect width="24" height="24" rx="4" fill="#141414"/><path d="M6 3l4.5 9L6 21h3l3-6.3L15 21h3L13.5 12 18 3h-3l-2.5 5.3L10 3z" fill="#E50914"/></svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">Netflix <span class="dot-status inactive"></span></div>
+          <div class="service-sub">Aucune activité</div>
+        </div>
+        <label class="toggle"><input type="checkbox" onchange="toggleService(this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+
+      <div class="service-row" data-name="twitch">
+        <div class="service-icon" style="background:#0e0a1a;">
+          <svg viewBox="0 0 24 24" width="22" height="22"><rect width="24" height="24" rx="4" fill="#6441A5"/><path fill="white" d="M5 3L3 7v13h4v3h3l3-3h4l5-5V3H5zm15 12l-3 3h-5l-3 3v-3H5V5h15v10zm-3-6h-2v5h2V9zm-5 0H10v5h2V9z"/></svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">Twitch <span class="dot-status inactive"></span></div>
+          <div class="service-sub">Aucune activité</div>
+        </div>
+        <label class="toggle"><input type="checkbox" onchange="toggleService(this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+    </div>
+
+    <!-- Hidden presences -->
+    <div class="divider"></div>
+    <div class="collapse-toggle" id="collapseBtn" onclick="toggleCollapse()">
+      <span>Présences masquées (2)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+
+    <div class="hidden-list" id="hiddenList">
+      <div class="service-row" data-name="github">
+        <div class="service-icon" style="background:#111;">
+          <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.4.6.1.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">GitHub</div>
+          <div class="service-sub">Masquée</div>
+        </div>
+        <button class="icon-btn" onclick="restoreService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.52"/></svg>
+        </button>
+      </div>
+      <div class="service-row" data-name="crunchyroll">
+        <div class="service-icon" style="background:#1a1200;">
+          <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="12" fill="#F47521"/><circle cx="12" cy="12" r="5" fill="white"/><circle cx="12" cy="12" r="3" fill="#F47521"/></svg>
+        </div>
+        <div class="service-info">
+          <div class="service-name">Crunchyroll</div>
+          <div class="service-sub">Masquée</div>
+        </div>
+        <button class="icon-btn" onclick="restoreService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.52"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer default view -->
+    <div class="footer">
+      <div class="tooltip-wrap">
+        <a class="footer-link" href="https://presences.app" target="_blank" title="Accéder au site">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </a>
+        <div class="tooltip">Ouvrir presences.app</div>
+      </div>
+      <div class="tooltip-wrap">
+        <a class="footer-link" href="https://github.com/presences-app/presences" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <div class="tooltip">GitHub — Issues &amp; contributions</div>
+      </div>
+    </div>
+
+  </div><!-- /view-default -->
+
+  <!-- ══════════════════════════════════════
+       VIEW: SETTINGS
+  ══════════════════════════════════════ -->
+  <div class="view" id="view-settings">
+    <div class="settings-scroll">
+
+      <!-- ── Compte Discord ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Compte Discord</div>
+        <div class="settings-card">
+          <div class="discord-account-card">
+            <div class="discord-big-avatar">
+              <div class="discord-big-avatar-inner" id="settingsDiscordAvatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </div>
+              <span class="discord-big-status offline" id="settingsDiscordStatus"></span>
+            </div>
+            <div class="discord-account-info">
+              <div class="discord-account-name" id="discordAccountName">Non connecté</div>
+              <div class="discord-account-tag" id="discordAccountTag">Lier un compte Discord</div>
+            </div>
+            <button class="btn-sm" onclick="switchDiscordAccount()">Changer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Apparence ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Apparence</div>
+        <div class="settings-card">
+          <!-- Theme -->
+          <div class="settings-row" style="padding-bottom:4px;">
+            <div class="settings-row-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              </svg>
+            </div>
+            <div class="settings-row-info">
+              <div class="settings-row-label">Thème</div>
+              <div class="settings-row-sub">Choisissez l'apparence de l'extension</div>
+            </div>
+          </div>
+          <div class="theme-inline-options">
+            <div class="theme-chip selected" data-value="dark" onclick="setTheme('dark', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+              </svg>
+              Sombre
+            </div>
+            <div class="theme-chip" data-value="light" onclick="setTheme('light', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+              Clair
+            </div>
+            <div class="theme-chip" data-value="auto" onclick="setTheme('auto', this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+              </svg>
+              Auto
+            </div>
+          </div>
+
+          <!-- Blur slider -->
+          <div style="border-top:1px solid var(--border);">
+            <div class="slider-row">
+              <div class="slider-row-top">
+                <span class="slider-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M8 12s1.5-4 4-4 4 4 4 4-1.5 4-4 4-4-4-4-4z" opacity=".4"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  Flou du player
+                </span>
+                <span class="slider-value" id="blurVal">22px</span>
+              </div>
+              <input type="range" id="blurSlider" min="0" max="40" value="22" step="1" oninput="updateBlur(this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Langue ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Langue</div>
+        <div class="settings-card">
+          <div class="settings-row" style="padding-bottom:4px;">
+            <div class="settings-row-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div class="settings-row-info">
+              <div class="settings-row-label">Langue de l'interface</div>
+              <div class="settings-row-sub">Français uniquement pour l'instant</div>
+            </div>
+          </div>
+          <div class="lang-options">
+            <div class="lang-chip selected" data-lang="fr" onclick="setLang('fr', this)">🇫🇷 Français</div>
+            <div class="lang-chip" data-lang="en" onclick="setLang('en', this)" style="opacity:.45; pointer-events:none; cursor:default;" title="Bientôt disponible">🇬🇧 English <span style="font-size:9px; opacity:.6;">(soon)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Présences ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Présences</div>
+        <div class="settings-card">
+          <div class="settings-row clickable" onclick="openSite()">
+            <div class="settings-row-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div class="settings-row-info">
+              <div class="settings-row-label">Parcourir les présences</div>
+              <div class="settings-row-sub">presences.app — ajouter de nouvelles présences</div>
+            </div>
+            <div class="settings-row-action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Mises à jour ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Mises à jour</div>
+        <div class="settings-card">
+          <div class="settings-row">
+            <div class="settings-row-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="updateIcon">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+            </div>
+            <div class="settings-row-info">
+              <div class="settings-row-label">Version actuelle</div>
+              <div class="settings-row-sub" id="updateSubtext">v1.0.0 — cliquez pour vérifier</div>
+            </div>
+            <div class="settings-row-action">
+              <span class="update-status checking" id="updateStatus">
+                <span class="update-status-dot"></span>
+                <span id="updateStatusText">—</span>
+              </span>
+              <button class="btn-sm" id="updateBtn" onclick="checkUpdate()">Vérifier</button>
+            </div>
+          </div>
+          <div class="settings-row" id="updateLinkRow" style="display:none;">
+            <div class="settings-row-icon" style="background:rgba(250,166,26,.1);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#faa61a" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div class="settings-row-info">
+              <div class="settings-row-label" style="color:var(--warn);">Mise à jour disponible</div>
+              <div class="settings-row-sub" id="updateNewVersion">v1.x.x — voir les nouveautés</div>
+            </div>
+            <div class="settings-row-action">
+              <a class="btn-sm accent" href="https://presences.app/releases" target="_blank">Télécharger</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Informations de débogage ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Débogage</div>
+        <div class="settings-card">
+          <div class="debug-grid">
+            <div class="debug-item">
+              <div class="debug-key">Extension</div>
+              <div class="debug-val ok">v1.0.0</div>
+            </div>
+            <div class="debug-item">
+              <div class="debug-key">Compagnon</div>
+              <div class="debug-val warn" id="dbgCompanion">Non connecté</div>
+            </div>
+            <div class="debug-item">
+              <div class="debug-key">WebSocket</div>
+              <div class="debug-val err" id="dbgWs">CLOSED</div>
+            </div>
+            <div class="debug-item">
+              <div class="debug-key">Discord RPC</div>
+              <div class="debug-val err" id="dbgRpc">IDLE</div>
+            </div>
+            <div class="debug-item">
+              <div class="debug-key">Présences actives</div>
+              <div class="debug-val">2 / 4</div>
+            </div>
+            <div class="debug-item">
+              <div class="debug-key">Latence WS</div>
+              <div class="debug-val" id="dbgLatency">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Liens ── -->
+      <div class="settings-group">
+        <div class="settings-group-label">Liens utiles</div>
+        <div class="settings-card">
+          <div class="ext-links">
+            <a class="ext-link-btn" href="https://github.com/presences-app/presences" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              GitHub
+            </a>
+            <a class="ext-link-btn" href="https://github.com/presences-app/presences/issues" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Issues
+            </a>
+            <a class="ext-link-btn" href="https://github.com/presences-app/presences/blob/main/CONTRIBUTING.md" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Contribuer
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- bottom padding -->
+      <div style="height:4px;"></div>
+    </div><!-- /settings-scroll -->
+  </div><!-- /view-settings -->
+
+</div><!-- /popup -->
+
+<script>
+/* ══════════════════════════
+   TABS
+══════════════════════════ */
+function switchTab(viewId, tabEl) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById('view-' + viewId).classList.add('active');
+}
+
+/* ══════════════════════════
+   PLAYER
+══════════════════════════ */
+let isPlaying = false, progress = 8;
+const duration = 166;
+let timer = null;
+const playIconSVG  = `<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>`;
+const pauseIconSVG = `<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+
+function fmt(s) { return Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0'); }
+
+function updateUI() {
+  document.getElementById('progressFill').style.width = (progress/duration*100)+'%';
+  document.getElementById('timeElapsed').textContent = fmt(progress);
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  document.getElementById('playBtn').innerHTML = isPlaying ? pauseIconSVG : playIconSVG;
+  if (isPlaying) {
+    timer = setInterval(() => {
+      progress = Math.min(progress+1, duration);
+      updateUI();
+      if (progress >= duration) { isPlaying=false; clearInterval(timer); document.getElementById('playBtn').innerHTML=playIconSVG; }
+    }, 1000);
+  } else clearInterval(timer);
+}
+
+function seekProgress(e) {
+  const r = document.getElementById('progressWrap').getBoundingClientRect();
+  progress = Math.round(Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*duration);
+  updateUI();
+}
+
+function skipPrev() { progress=0; updateUI(); }
+function skipNext() { progress=duration; updateUI(); }
+
+/* ══════════════════════════
+   BLUR SLIDER
+══════════════════════════ */
+function updateBlur(val) {
+  document.getElementById('blurVal').textContent = val + 'px';
+  const brightness = document.documentElement.getAttribute('data-theme') === 'light' ? 0.55 : 0.35;
+  document.getElementById('cinemaBg').style.filter = `blur(${val}px) brightness(${brightness}) saturate(1.6)`;
+}
+
+/* ══════════════════════════
+   COLLAPSE
+══════════════════════════ */
+function toggleCollapse() {
+  document.getElementById('hiddenList').classList.toggle('open');
+  document.getElementById('collapseBtn').classList.toggle('open');
+}
+
+/* ══════════════════════════
+   SERVICES
+══════════════════════════ */
+function toggleService(cb) {
+  const dot = cb.closest('.service-row').querySelector('.dot-status');
+  if (dot) dot.className = 'dot-status '+(cb.checked ? 'active':'inactive');
+}
+
+function restoreService(btn) {
+  const row = btn.closest('.service-row');
+  row.style.transition='opacity .2s'; row.style.opacity='0';
+  setTimeout(()=>row.remove(), 200);
+  const count = document.querySelectorAll('#hiddenList .service-row').length - 1;
+  const lbl = document.querySelector('.collapse-toggle span');
+  if (count===0) document.getElementById('collapseBtn').style.display='none';
+  else lbl.textContent = `Présences masquées (${count})`;
+}
+
+function filterServices() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('#serviceList .service-row').forEach(r => {
+    r.style.display = (r.dataset.name||'').includes(q) ? '' : 'none';
+  });
+}
+
+/* ══════════════════════════
+   THEME
+══════════════════════════ */
+let currentTheme = 'dark';
+
+function applyTheme(val) {
+  const resolved = val==='auto'
+    ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light':'dark')
+    : val;
+  document.documentElement.setAttribute('data-theme', resolved);
+  // re-apply blur with correct brightness
+  const bv = document.getElementById('blurSlider').value;
+  updateBlur(bv);
+}
+
+function setTheme(val, optionEl) {
+  currentTheme = val;
+  applyTheme(val);
+  document.querySelectorAll('.theme-chip').forEach(c => c.classList.remove('selected'));
+  optionEl.classList.add('selected');
+}
+
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', ()=>{
+  if (currentTheme==='auto') applyTheme('auto');
+});
+
+/* ══════════════════════════
+   LANG
+══════════════════════════ */
+function setLang(lang, el) {
+  document.querySelectorAll('.lang-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  // i18n hook: implement translation here
+}
+
+/* ══════════════════════════
+   DISCORD ACCOUNT
+══════════════════════════ */
+function switchDiscordAccount() {
+  // Hook: trigger OAuth flow via companion WS
+  alert('Fonctionnalité à implémenter via le compagnon WS (OAuth Discord)');
+}
+
+/* Exposed for WS bridge */
+function setDiscordAccount(name, tag, avatarUrl, status) {
+  document.getElementById('discordAccountName').textContent = name;
+  document.getElementById('discordAccountTag').textContent  = '#'+tag;
+  // Header avatar
+  const hdr = document.getElementById('discordAvatar');
+  hdr.innerHTML = `<img src="${avatarUrl}">`;
+  document.getElementById('discordStatusDot').className = 'discord-status-dot '+status;
+  // Settings avatar
+  const sa = document.getElementById('settingsDiscordAvatar');
+  sa.innerHTML = `<img src="${avatarUrl}">`;
+  document.getElementById('settingsDiscordStatus').className = 'discord-big-status '+status;
+}
+
+/* ══════════════════════════
+   COMPANION STATUS
+══════════════════════════ */
+function setCompanionStatus(status, errorMsg) {
+  const el  = document.getElementById('companionIndicator');
+  const tip = document.getElementById('companionTooltip');
+  el.className = 'companion-indicator '+status;
+  const msgs = { ok:'Compagnon connecté', offline:'Compagnon non connecté', error: errorMsg||'Erreur de synchronisation' };
+  tip.textContent = msgs[status];
+  // Debug panel
+  const dbgWs = document.getElementById('dbgWs');
+  const dbgRpc = document.getElementById('dbgRpc');
+  const dbgC   = document.getElementById('dbgCompanion');
+  if (status==='ok') {
+    dbgC.textContent='Connecté'; dbgC.className='debug-val ok';
+    dbgWs.textContent='OPEN'; dbgWs.className='debug-val ok';
+    dbgRpc.textContent='ACTIVE'; dbgRpc.className='debug-val ok';
+  } else if (status==='error') {
+    dbgC.textContent='Erreur'; dbgC.className='debug-val err';
+    dbgWs.textContent='ERROR'; dbgWs.className='debug-val err';
+  }
+}
+
+/* ══════════════════════════
+   CHECK UPDATE
+══════════════════════════ */
+async function checkUpdate() {
+  const btn    = document.getElementById('updateBtn');
+  const status = document.getElementById('updateStatus');
+  const txt    = document.getElementById('updateStatusText');
+  const sub    = document.getElementById('updateSubtext');
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  status.className = 'update-status checking';
+  txt.textContent = 'Vérification…';
+
+  try {
+    // Replace URL with your real releases API endpoint
+    const res  = await fetch('https://api.github.com/repos/presences-app/presences/releases/latest');
+    const data = await res.json();
+    const latest = data.tag_name || data.name || 'v1.0.0';
+    const current = 'v1.0.0';
+
+    if (latest === current) {
+      status.className = 'update-status up-to-date';
+      txt.textContent = 'À jour';
+      sub.textContent = current+' — vous avez la dernière version';
+      document.getElementById('updateLinkRow').style.display = 'none';
+    } else {
+      status.className = 'update-status update-available';
+      txt.textContent = 'Mise à jour';
+      sub.textContent = current+' installée — '+latest+' disponible';
+      document.getElementById('updateLinkRow').style.display = 'flex';
+      document.getElementById('updateNewVersion').textContent = latest+' — voir les nouveautés';
+    }
+  } catch(e) {
+    status.className = 'update-status error';
+    txt.textContent = 'Erreur';
+    sub.textContent = 'Impossible de contacter le serveur';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Vérifier';
+}
+
+function openSite() {
+  window.open('https://presences.app', '_blank');
+}
+
+/* ══════════════════════════
+   INIT
+══════════════════════════ */
+updateUI();
+applyTheme('dark');
+</script>
+</body>
+</html>
