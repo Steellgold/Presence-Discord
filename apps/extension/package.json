@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@dp/utils": "workspace:*",
     "@dp/tailwind-config": "workspace:*",
+    "@dp/utils": "workspace:*",
     "@dp/websites": "workspace:*",
+    "lucide-react": "^1.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },

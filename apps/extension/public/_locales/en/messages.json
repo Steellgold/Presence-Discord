@@ -8,7 +8,7 @@
     "description": "Extension description shown in Chrome UI."
   },
   "popupTitle": {
-    "message": "Discord Presence",
+    "message": "Presences",
     "description": "Popup title."
   },
   "popupStatusLabel": {
@@ -26,6 +26,145 @@
   "popupLocaleLabel": {
     "message": "Locale",
     "description": "Label for the current Chrome UI locale."
+  },
+  "popupLanguageLabel": {
+    "message": "Language",
+    "description": "Label for the language switcher."
+  },
+  "popupThemeLabel": {
+    "message": "Theme",
+    "description": "Label for the theme switcher."
+  },
+  "popupHiddenPresences": {
+    "message": "Hidden presences",
+    "description": "Label for hidden presences."
+  },
+  "popupHiddenPresencesWithCount": {
+    "message": "Hidden presences ($COUNT$)",
+    "description": "Label for hidden presences with a count."
+  },
+  "popupNowPlaying": {
+    "message": "Now playing",
+    "description": "Label for currently playing activity."
+  },
+  "popupThemeDark": {
+    "message": "Dark theme",
+    "description": "Label for dark theme mode."
+  },
+  "popupThemeLight": {
+    "message": "Light theme",
+    "description": "Label for light theme mode."
+  },
+  "popupThemeSystem": {
+    "message": "System theme",
+    "description": "Label for system theme mode."
+  },
+  "popupDefaultTab": {
+    "message": "Default",
+    "description": "Default tab label."
+  },
+  "popupSettingsTab": {
+    "message": "Settings",
+    "description": "Settings tab label."
+  },
+  "popupSearchPlaceholder": {
+    "message": "Search...",
+    "description": "Search input placeholder."
+  },
+  "popupLibrary": {
+    "message": "Library",
+    "description": "Library section label."
+  },
+  "popupCompanionConnected": {
+    "message": "Companion connected",
+    "description": "Tooltip shown when the companion is connected."
+  },
+  "popupCompanionDisconnected": {
+    "message": "Companion not connected",
+    "description": "Tooltip shown when the companion is disconnected."
+  },
+  "popupPlay": {
+    "message": "Play",
+    "description": "Play action label."
+  },
+  "popupPause": {
+    "message": "Pause",
+    "description": "Pause action label."
+  },
+  "popupPrevious": {
+    "message": "Previous",
+    "description": "Previous media action label."
+  },
+  "popupNext": {
+    "message": "Next",
+    "description": "Next media action label."
+  },
+  "popupProgress": {
+    "message": "Progress",
+    "description": "Media progress label."
+  },
+  "popupDisablePresence": {
+    "message": "Disable $NAME$",
+    "description": "Disable presence action label."
+  },
+  "popupRestorePresence": {
+    "message": "Restore $NAME$",
+    "description": "Restore presence action label."
+  },
+  "popupNoActivity": {
+    "message": "No activity",
+    "description": "Subtitle when there is no current activity."
+  },
+  "popupHiddenLabel": {
+    "message": "Hidden",
+    "description": "Subtitle for a hidden presence row."
+  },
+  "popupVersion": {
+    "message": "v0.0.0",
+    "description": "Version displayed in the popup header."
+  },
+  "popupConnected": {
+    "message": "Connected",
+    "description": "Short connected label."
+  },
+  "popupDisconnected": {
+    "message": "Disconnected",
+    "description": "Short disconnected label."
+  },
+  "popupSyncError": {
+    "message": "Sync error",
+    "description": "Sync error label."
+  },
+  "popupSettingsTitle": {
+    "message": "Settings",
+    "description": "Settings screen title."
+  },
+  "popupSettingsDescription": {
+    "message": "Choose how the extension behaves in your browser.",
+    "description": "Short settings screen description."
+  },
+  "popupAppearance": {
+    "message": "Appearance",
+    "description": "Appearance group title."
+  },
+  "popupSystem": {
+    "message": "System",
+    "description": "System theme option."
+  },
+  "popupDark": {
+    "message": "Dark",
+    "description": "Dark theme option."
+  },
+  "popupLight": {
+    "message": "Light",
+    "description": "Light theme option."
+  },
+  "popupEnglish": {
+    "message": "English",
+    "description": "English language option."
+  },
+  "popupFrench": {
+    "message": "French",
+    "description": "French language option."
   }
 }
-

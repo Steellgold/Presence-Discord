@@ -1,31 +1,170 @@
 {
   "extensionName": {
     "message": "Discord Presence",
-    "description": "Nom de l'extension affiche dans l'interface Chrome."
+    "description": "Nom de l'extension affiché dans l'interface Chrome."
   },
   "extensionDescription": {
-    "message": "Partage une presence enrichie depuis les sites compatibles vers Discord.",
-    "description": "Description de l'extension affichee dans l'interface Chrome."
+    "message": "Partage une présence enrichie depuis les sites compatibles vers Discord.",
+    "description": "Description de l'extension affichée dans l'interface Chrome."
   },
   "popupTitle": {
-    "message": "Discord Presence",
+    "message": "Présences",
     "description": "Titre de la popup."
   },
   "popupStatusLabel": {
     "message": "Statut",
-    "description": "Libelle du statut de connexion de l'extension."
+    "description": "Libellé du statut de connexion de l'extension."
   },
   "popupStatusReady": {
-    "message": "Pret",
-    "description": "Statut affiche quand la popup de l'extension est prete."
+    "message": "Prêt",
+    "description": "Statut affiché quand la popup de l'extension est prête."
   },
   "popupSupportedSites": {
     "message": "Sites compatibles",
-    "description": "Libelle du nombre de sites compatibles."
+    "description": "Libellé du nombre de sites compatibles."
   },
   "popupLocaleLabel": {
     "message": "Langue",
-    "description": "Libelle de la langue actuelle de l'interface Chrome."
+    "description": "Libellé de la langue actuelle de l'interface Chrome."
+  },
+  "popupLanguageLabel": {
+    "message": "Langue",
+    "description": "Libellé du switcher de langue."
+  },
+  "popupThemeLabel": {
+    "message": "Thème",
+    "description": "Libellé du switcher de thème."
+  },
+  "popupHiddenPresences": {
+    "message": "Présences masquées",
+    "description": "Libellé des présences masquées."
+  },
+  "popupHiddenPresencesWithCount": {
+    "message": "Présences masquées ($COUNT$)",
+    "description": "Libellé des présences masquées avec un compteur."
+  },
+  "popupNowPlaying": {
+    "message": "En cours de lecture",
+    "description": "Libellé de l'activité en cours."
+  },
+  "popupThemeDark": {
+    "message": "Thème sombre",
+    "description": "Libellé du thème sombre."
+  },
+  "popupThemeLight": {
+    "message": "Thème clair",
+    "description": "Libellé du thème clair."
+  },
+  "popupThemeSystem": {
+    "message": "Thème système",
+    "description": "Libellé du thème système."
+  },
+  "popupDefaultTab": {
+    "message": "Par défaut",
+    "description": "Libellé de l'onglet par défaut."
+  },
+  "popupSettingsTab": {
+    "message": "Réglages",
+    "description": "Libellé de l'onglet réglages."
+  },
+  "popupSearchPlaceholder": {
+    "message": "Rechercher...",
+    "description": "Placeholder du champ de recherche."
+  },
+  "popupLibrary": {
+    "message": "Bibliothèque",
+    "description": "Libellé de la section bibliothèque."
+  },
+  "popupCompanionConnected": {
+    "message": "Compagnon connecté",
+    "description": "Tooltip affiché quand le compagnon est connecté."
+  },
+  "popupCompanionDisconnected": {
+    "message": "Compagnon non connecté",
+    "description": "Tooltip affiché quand le compagnon est déconnecté."
+  },
+  "popupPlay": {
+    "message": "Lecture",
+    "description": "Libellé de l'action lecture."
+  },
+  "popupPause": {
+    "message": "Pause",
+    "description": "Libellé de l'action pause."
+  },
+  "popupPrevious": {
+    "message": "Précédent",
+    "description": "Libellé de l'action média précédent."
+  },
+  "popupNext": {
+    "message": "Suivant",
+    "description": "Libellé de l'action média suivant."
+  },
+  "popupProgress": {
+    "message": "Progression",
+    "description": "Libellé de progression média."
+  },
+  "popupDisablePresence": {
+    "message": "Désactiver $NAME$",
+    "description": "Libellé de l'action désactiver une présence."
+  },
+  "popupRestorePresence": {
+    "message": "Réactiver $NAME$",
+    "description": "Libellé de l'action restaurer une présence."
+  },
+  "popupNoActivity": {
+    "message": "Aucune activité",
+    "description": "Sous-titre quand il n'y a aucune activité."
+  },
+  "popupHiddenLabel": {
+    "message": "Masquée",
+    "description": "Sous-titre pour une présence masquée."
+  },
+  "popupVersion": {
+    "message": "v0.0.0",
+    "description": "Version affichée dans l'en-tête de la popup."
+  },
+  "popupConnected": {
+    "message": "Connecté",
+    "description": "Libellé court connecté."
+  },
+  "popupDisconnected": {
+    "message": "Déconnecté",
+    "description": "Libellé court déconnecté."
+  },
+  "popupSyncError": {
+    "message": "Erreur de synchro",
+    "description": "Libellé d'erreur de synchronisation."
+  },
+  "popupSettingsTitle": {
+    "message": "Réglages",
+    "description": "Titre de l'écran de réglages."
+  },
+  "popupSettingsDescription": {
+    "message": "Choisissez le comportement de l'extension dans votre navigateur.",
+    "description": "Description courte de l'écran de réglages."
+  },
+  "popupAppearance": {
+    "message": "Apparence",
+    "description": "Titre du groupe apparence."
+  },
+  "popupSystem": {
+    "message": "Système",
+    "description": "Option thème système."
+  },
+  "popupDark": {
+    "message": "Sombre",
+    "description": "Option thème sombre."
+  },
+  "popupLight": {
+    "message": "Clair",
+    "description": "Option thème clair."
+  },
+  "popupEnglish": {
+    "message": "Anglais",
+    "description": "Option langue anglaise."
+  },
+  "popupFrench": {
+    "message": "Français",
+    "description": "Option langue française."
   }
 }
-

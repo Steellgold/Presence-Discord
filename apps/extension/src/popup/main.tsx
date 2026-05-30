@@ -14,4 +14,3 @@ createRoot(rootElement).render(
     <Popup />
   </React.StrictMode>,
 );
-

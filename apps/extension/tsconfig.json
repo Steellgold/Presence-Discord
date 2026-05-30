@@ -11,7 +11,7 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "types": ["chrome", "vite/client"]
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*.json"],
   "references": [
     {
       "path": "../../packages/utils"
