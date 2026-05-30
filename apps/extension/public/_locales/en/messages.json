@@ -41,7 +41,13 @@
   },
   "popupHiddenPresencesWithCount": {
     "message": "Hidden presences ($COUNT$)",
-    "description": "Label for hidden presences with a count."
+    "description": "Label for hidden presences with a count.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
   },
   "popupNowPlaying": {
     "message": "Now playing",
@@ -105,11 +111,23 @@
   },
   "popupDisablePresence": {
     "message": "Disable $NAME$",
-    "description": "Disable presence action label."
+    "description": "Disable presence action label.",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "YouTube"
+      }
+    }
   },
   "popupRestorePresence": {
     "message": "Restore $NAME$",
-    "description": "Restore presence action label."
+    "description": "Restore presence action label.",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "YouTube"
+      }
+    }
   },
   "popupNoActivity": {
     "message": "No activity",

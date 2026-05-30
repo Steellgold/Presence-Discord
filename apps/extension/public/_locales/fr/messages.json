@@ -41,7 +41,13 @@
   },
   "popupHiddenPresencesWithCount": {
     "message": "Présences masquées ($COUNT$)",
-    "description": "Libellé des présences masquées avec un compteur."
+    "description": "Libellé des présences masquées avec un compteur.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
   },
   "popupNowPlaying": {
     "message": "En cours de lecture",
@@ -105,11 +111,23 @@
   },
   "popupDisablePresence": {
     "message": "Désactiver $NAME$",
-    "description": "Libellé de l'action désactiver une présence."
+    "description": "Libellé de l'action désactiver une présence.",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "YouTube"
+      }
+    }
   },
   "popupRestorePresence": {
     "message": "Réactiver $NAME$",
-    "description": "Libellé de l'action restaurer une présence."
+    "description": "Libellé de l'action restaurer une présence.",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "YouTube"
+      }
+    }
   },
   "popupNoActivity": {
     "message": "Aucune activité",
