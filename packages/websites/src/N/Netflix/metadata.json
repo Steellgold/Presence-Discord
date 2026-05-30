@@ -1,0 +1,5 @@
+{
+  "id": "netflix",
+  "displayName": "Netflix",
+  "matchers": ["netflix.com"]
+}

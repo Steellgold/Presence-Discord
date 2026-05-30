@@ -1,0 +1,5 @@
+{
+  "id": "spotify",
+  "displayName": "Spotify",
+  "matchers": ["spotify.com"]
+}

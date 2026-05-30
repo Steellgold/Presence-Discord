@@ -1,44 +1,44 @@
-import { listSupportedWebsites } from "@dp/websites";
+import { useEffect, useMemo, useState } from "react";
 import type { JSX } from "react";
-import { getCurrentLocale, getMessage } from "../lib/i18n";
+import { DefaultView } from "./components/DefaultView";
+import { Header } from "./components/Header";
+import { SettingsView } from "./components/SettingsView";
+import { Tabs, type ViewId } from "./components/Tabs";
+import { useSites } from "./hooks/useSites";
 
-const supportedWebsites = listSupportedWebsites();
+type ThemeChoice = "dark" | "light" | "auto";
 
-export const Popup = (): JSX.Element => (
-  <main className="extension-bg grid w-80 gap-4 p-[18px] text-foreground">
-    <header className="flex items-center gap-2.5">
-      <span
-        className="size-2.5 rounded-full bg-success shadow-[0_0_0_4px_rgba(35,165,90,0.16)]"
-        aria-hidden="true"
-      />
-      <h1 className="m-0 text-lg font-bold tracking-normal">{getMessage("popupTitle")}</h1>
-    </header>
+const resolveTheme = (theme: ThemeChoice): "dark" | "light" => {
+  if (theme !== "auto") return theme;
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+};
 
-    <dl className="m-0 grid gap-2.5">
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupStatusLabel")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {getMessage("popupStatusReady")}
-        </dd>
-      </div>
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupSupportedSites")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {supportedWebsites.length}
-        </dd>
-      </div>
-      <div className="flex min-h-[42px] items-center justify-between rounded-lg border border-border bg-white/5 px-3 py-2.5">
-        <dt className="m-0 text-[13px] tracking-normal text-muted-foreground">
-          {getMessage("popupLocaleLabel")}
-        </dt>
-        <dd className="m-0 text-[13px] font-bold tracking-normal text-white">
-          {getCurrentLocale()}
-        </dd>
-      </div>
-    </dl>
-  </main>
-);
+export const Popup = (): JSX.Element => {
+  const [activeView, setActiveView] = useState<ViewId>("default");
+  const [theme, setTheme] = useState<ThemeChoice>("dark");
+  const [blur, setBlur] = useState(22);
+  const sites = useSites();
+  const activeCount = useMemo(() => sites.filter((site) => site.active).length, [sites]);
+  const visibleCount = useMemo(() => sites.filter((site) => !site.hidden).length, [sites]);
+
+  useEffect(() => {
+    const apply = () => {
+      const resolved = resolveTheme(theme);
+      document.documentElement.setAttribute("data-theme", resolved);
+      document.documentElement.lang = resolved === "dark" ? "fr" : "fr";
+    };
+    apply();
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [theme]);
+
+  return (
+    <div className="popup">
+      <Header companionStatus="offline" />
+      <Tabs activeView={activeView} onSelect={setActiveView} />
+      <DefaultView active={activeView === "default"} sites={sites} blur={blur} />
+      <SettingsView active={activeView === "settings"} blur={blur} onBlurChange={setBlur} theme={theme} onThemeChange={setTheme} activeCount={activeCount} totalCount={visibleCount} />
+    </div>
+  );
+};

@@ -4,7 +4,7 @@ import frFR from "../locales/fr-FR.json";
 export type Locale = "en-US" | "fr-FR";
 
 const STORAGE_LOCALE_KEY = "dp_popup_locale";
-const FALLBACK_LOCALE: Locale = "en-US";
+const FALLBACK_LOCALE: Locale = "fr-FR";
 
 export const messages = {
   "en-US": enUS,

@@ -4,12 +4,11 @@ Monorepo PNPM pour les applications et packages du projet Discord Presence.
 
 ## Structure
 
-- `apps/web` : application web React + TypeScript + Tailwind CSS.
-- `apps/companion` : application compagnon Electron + React + TypeScript + Tailwind CSS.
-- `apps/extension` : extension navigateur React + TypeScript + Tailwind CSS.
+- `apps/web` : application web React + TypeScript + CSS natif.
+- `apps/companion` : application compagnon Electron + React + TypeScript + CSS natif.
+- `apps/extension` : extension navigateur React + TypeScript + CSS natif.
 - `packages/websites` : catalogue et logique des sites supportes.
 - `packages/utils` : utilitaires partages.
-- `packages/tailwind-config` : theme Tailwind partage entre web, extension et compagnon.
 
 Les packages workspace utilisent le scope `@dp/*`.
 

@@ -1,0 +1,5 @@
+{
+  "id": "crunchyroll",
+  "displayName": "Crunchyroll",
+  "matchers": ["crunchyroll.com"]
+}
