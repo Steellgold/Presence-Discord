@@ -1,9 +1,0 @@
-# ─── Outils de build (binaires auto-téléchargés) ──────────────────────────────
-companion/build/rcedit.exe
-
-# ─── Claude Code ──────────────────────────────────────────────────────────────
-.claude/
-
-dist/
-*.env
-**/node_modules/
